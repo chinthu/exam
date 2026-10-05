@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'figures.dart';
 import 'questions.dart';
 
 const _ink = Color(0xFF171717);
@@ -79,7 +80,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final quizLength = categories.length * questionsPerCategory;
+    final quizLength = quizSize;
     return PhoneShell(
       child: Scaffold(
         body: SafeArea(
@@ -97,7 +98,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                '$quizLength questions, two from every topic.',
+                '$quizLength questions, at least one from every topic.',
                 style: const TextStyle(fontSize: 16, height: 1.4, color: _muted),
               ),
               const SizedBox(height: 28),
@@ -269,10 +270,17 @@ class _QuizScreenState extends State<QuizScreen> {
                     question.prompt,
                     style: const TextStyle(fontSize: 26, height: 1.25, fontWeight: FontWeight.w700, color: _ink),
                   ),
+                  if (question.figure != null) ...[
+                    const SizedBox(height: 20),
+                    FigureView(art: question.figure!),
+                  ],
                   const SizedBox(height: 28),
                   for (var i = 0; i < question.options.length; i++) ...[
                     _OptionButton(
-                      label: '${String.fromCharCode(97 + i)}) ${question.options[i]}',
+                      label: question.artForOption(i) == null
+                          ? '${String.fromCharCode(97 + i)}) ${question.options[i]}'
+                          : '${String.fromCharCode(97 + i)})',
+                      art: question.artForOption(i),
                       color: _optionColor(i),
                       onPressed: _locked ? null : () => _choose(i),
                     ),
@@ -351,11 +359,13 @@ class _OptionButton extends StatelessWidget {
     required this.label,
     required this.color,
     required this.onPressed,
+    this.art,
   });
 
   final String label;
   final Color? color;
   final VoidCallback? onPressed;
+  final Art? art;
 
   @override
   Widget build(BuildContext context) {
@@ -378,7 +388,17 @@ class _OptionButton extends StatelessWidget {
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         onPressed: onPressed,
-        child: Text(label),
+        child: art == null
+            ? Text(label)
+            : Row(
+                children: [
+                  Text(label),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FigureView(art: art!, compact: true, onColor: filled),
+                  ),
+                ],
+              ),
       ),
     );
   }

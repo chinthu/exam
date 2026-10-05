@@ -2,13 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:scholarship_quiz/figures.dart';
 import 'package:scholarship_quiz/main.dart';
 import 'package:scholarship_quiz/questions.dart';
 
 void main() {
-  test('quiz takes two questions from every category', () {
+  test('quiz has 15 questions and at least one from every category', () {
     final quiz = pickQuiz(questionBank, Random(1));
-    expect(quiz.length, categories.length * questionsPerCategory);
+    expect(quiz.length, quizSize);
 
     final counts = <String, int>{};
     for (final question in quiz) {
@@ -16,8 +17,17 @@ void main() {
     }
     expect(counts.length, categories.length);
     for (final count in counts.values) {
-      expect(count, greaterThanOrEqualTo(2));
+      expect(count, greaterThanOrEqualTo(1));
     }
+  });
+
+  testWidgets('shape question shows a picture', (WidgetTester tester) async {
+    final shape = questionBank.firstWhere((question) => question.figure == Art.squareGrid);
+    await tester.pumpWidget(
+      MaterialApp(home: QuizScreen(questions: [shape, shape])),
+    );
+    expect(find.byKey(const Key('quiz-figure')), findsOneWidget);
+    expect(find.text('How many squares do you see in this picture?'), findsOneWidget);
   });
 
   testWidgets('home screen starts a quiz', (WidgetTester tester) async {
@@ -27,6 +37,6 @@ void main() {
     await tester.tap(find.byKey(const Key('attend-quiz')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Question 1 of 26'), findsOneWidget);
+    expect(find.text('Question 1 of 15'), findsOneWidget);
   });
 }

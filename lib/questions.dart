@@ -1,24 +1,36 @@
 import 'dart:math';
 
+import 'figures.dart';
+
 class Question {
   const Question({
     required this.category,
     required this.prompt,
     required this.options,
     required this.correctIndex,
+    this.figure,
+    this.optionArts = const [],
   });
 
   final String category;
   final String prompt;
   final List<String> options;
   final int correctIndex;
+  final Art? figure;
+  final List<Art?> optionArts;
 
   String get correctAnswer => options[correctIndex];
+
+  Art? artForOption(int index) {
+    if (index < 0 || index >= optionArts.length) return null;
+    return optionArts[index];
+  }
 }
 
-/// Two questions from each of the 13 topics. 13 x 2 = 26, which is the
-/// smallest quiz that still includes at least two questions from every topic.
-const int questionsPerCategory = 2;
+/// 13 topics need one question each. Two more are drawn from the rest, so
+/// every quiz is 15 questions and still covers every topic.
+const int quizSize = 15;
+const int questionsPerCategory = 1;
 
 List<Question> pickQuiz(List<Question> bank, Random random) {
   final grouped = <String, List<Question>>{};
@@ -27,11 +39,17 @@ List<Question> pickQuiz(List<Question> bank, Random random) {
   }
 
   final selected = <Question>[];
+  final used = <Question>{};
   for (final questions in grouped.values) {
     final copy = List<Question>.of(questions)..shuffle(random);
-    final count = min(questionsPerCategory, copy.length);
-    selected.addAll(copy.take(count));
+    final taken = copy.take(min(questionsPerCategory, copy.length));
+    selected.addAll(taken);
+    used.addAll(taken);
   }
+
+  final rest = bank.where((question) => !used.contains(question)).toList()..shuffle(random);
+  final extra = quizSize - selected.length;
+  if (extra > 0) selected.addAll(rest.take(extra));
   selected.shuffle(random);
   return selected;
 }
@@ -52,12 +70,21 @@ const List<String> categories = [
   'Aptitude, Analytical, Critical Thinking and Logical Reasoning',
 ];
 
-Question _q(String category, String prompt, List<String> options, int correct) {
+Question _q(
+  String category,
+  String prompt,
+  List<String> options,
+  int correct, {
+  Art? figure,
+  List<Art?> optionArts = const [],
+}) {
   return Question(
     category: category,
     prompt: prompt,
     options: options,
     correctIndex: correct,
+    figure: figure,
+    optionArts: optionArts,
   );
 }
 
@@ -256,22 +283,22 @@ final List<Question> _math = [
 final List<Question> _aptitude = [
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which number comes next in this series: 1, 3, 5, 7, ....?', ['11', '9', '8', '10'], 1),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which is taller?', ['Pencil', 'Tree', 'Book', 'Eraser'], 1),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'A large square is divided into 4 equal smaller squares. How many squares do you see in all?', ['2', '1', '4', '5'], 3),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which of the following looks like a cone?', ['Square', 'Triangle', 'Circle', 'Cylinder'], 1),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Flowers are added two at a time. Pattern 1 has 4 flowers, Pattern 2 has 6, and Pattern 3 has 8. How many flowers will be there in Pattern 4?', ['10', '14', '12', '16'], 0),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'How many squares do you see in this picture?', ['2', '1', '4', '5'], 3, figure: Art.squareGrid),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which of the following looks like a cone?', ['Square', 'Triangle', 'Circle', 'Cylinder'], 1, optionArts: [Art.square, Art.triangle, Art.circle, Art.cylinder]),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'How many flowers will be there in Pattern 4?', ['10', '14', '12', '16'], 0, figure: Art.flowers),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'What sound does a dog make?', ['Meow', 'Woof', 'Moo', 'Chirp'], 1),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which pair shows an equal collection of dots?', ['3 dots and 4 dots', '4 dots and 4 dots', '5 dots and 6 dots', '2 dots and 3 dots'], 1),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which figure shows an equal collection?', ['3 dots and 4 dots', '4 dots and 4 dots', '5 dots and 6 dots', '2 dots and 3 dots'], 1, optionArts: [Art.dotsUnevenA, Art.dotsEqual, Art.dotsUnevenC, Art.dotsUnevenD]),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which number comes next in the pattern 6, 12, 18, 24, 30, ?', ['32', '36', '34', '40'], 1),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'What comes after 25?', ['23', '24', '26', '27'], 2),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', "If it's raining, what should you take with you?", ['Sun glasses', 'Umbrella', 'Hat', 'Ice cream'], 1),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'There are 7 ones and 8 tens in ________.', ['78', '32', '29', '87'], 3),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'A figure has one big circle, 3 circles inside it, and 5 circles outside it. How many circles are there in all?', ['7', '8', '100', '9'], 3),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Circle 3 is the smallest, circle 2 is a little bigger, circle 1 is bigger than circle 2, and circle 4 is the biggest. Which order is from smallest to largest?', ['1, 2, 3, 4', '4, 2, 3, 1', '2, 1, 4, 3', '3, 2, 1, 4'], 3),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'How many circles are there in the given figure?', ['7', '8', '100', '9'], 3, figure: Art.circleCluster),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Arrange the circles from the smallest to the largest.', ['1, 2, 3, 4', '4, 2, 3, 1', '2, 1, 4, 3', '3, 2, 1, 4'], 3, figure: Art.sizedCircles),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'If a glass falls, what will happen?', ['It will fly', 'It will bounce', 'It will break', 'It will grow'], 2),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which one is different?', ['Pig', 'Rat', 'Mouse', 'Car'], 3),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which one is different?', ['Pig', 'Rat', 'Mouse', 'Car'], 3, optionArts: [Art.pig, Art.rat, Art.mouse, Art.car]),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which is the shortest?', ['Giraffe', 'Elephant', 'Rabbit', 'Horse'], 2),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'If the sun is shining, what time is it likely to be?', ['Day', 'Night', 'Winter', 'Cloudy'], 0),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'Which number should be added to 3 to make 9?', ['5', '6', '7', '8'], 1),
-  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'What comes next in this pattern: Triangle, Circle, Triangle, Circle?', ['Triangle', 'Circle', 'Rectangle', 'Pentagon'], 0),
+  _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'What comes next?', ['Triangle', 'Circle', 'Rectangle', 'Pentagon'], 0, figure: Art.shapeSequence, optionArts: [Art.triangle, Art.circle, Art.rectangle, Art.pentagon]),
   _q('Aptitude, Analytical, Critical Thinking and Logical Reasoning', 'What do you do before crossing a road?', ['Run fast', 'Close eyes', 'Look both sides', 'Shout'], 2),
 ];

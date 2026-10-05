@@ -1,8 +1,6 @@
 # Scholarship Quiz
 
-A Flutter web quiz taken from the scholarship syllabus. Each attempt loads **26 multiple-choice questions**: two shuffled questions from each of the 13 topics.
-
-There are 13 topics, so two from every topic is 26 questions. That is the smallest set that still includes at least two questions from each topic.
+A Flutter web quiz taken from the scholarship syllabus. Each attempt loads **15 multiple-choice questions**, with at least one from each of the 13 topics. Shape questions show the picture.
 
 A correct answer turns green and moves on. A wrong answer turns red, shows the correct answer in green, and waits for OK before the next question. The score is shown after the last question.
 
