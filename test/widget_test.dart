@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:scholarship_quiz/figures.dart';
+import 'package:scholarship_quiz/kerala_questions.dart';
 import 'package:scholarship_quiz/main.dart';
 import 'package:scholarship_quiz/questions.dart';
 
@@ -30,6 +31,24 @@ void main() {
     expect(find.text('How many squares do you see in this picture?'), findsOneWidget);
   });
 
+  test('kerala special has 90 questions and each quiz picks 15', () {
+    expect(keralaQuestionBank, hasLength(90));
+    final prompts = keralaQuestionBank.map((question) => question.prompt).toSet();
+    expect(prompts, hasLength(90));
+
+    for (final question in keralaQuestionBank) {
+      expect(question.options, hasLength(4));
+      expect(question.correctIndex, inInclusiveRange(0, 3));
+    }
+
+    final quiz = pickRandomQuiz(keralaQuestionBank, Random(2));
+    expect(quiz, hasLength(quizSize));
+    expect(quiz.toSet(), hasLength(quizSize));
+    for (final question in quiz) {
+      expect(keralaQuestionBank.contains(question), isTrue);
+    }
+  });
+
   testWidgets('home screen starts a quiz', (WidgetTester tester) async {
     await tester.pumpWidget(const ScholarshipQuizApp());
     expect(find.text('Attend Quiz'), findsOneWidget);
@@ -38,5 +57,20 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Question 1 of 15'), findsOneWidget);
+  });
+
+  testWidgets('kerala special starts a 15 question quiz', (WidgetTester tester) async {
+    await tester.pumpWidget(const ScholarshipQuizApp());
+    expect(find.text('Kerala Special'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('kerala-special')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Question 1 of 15'), findsOneWidget);
+    final prompts = keralaQuestionBank.map((question) => question.prompt).toSet();
+    expect(
+      find.byWidgetPredicate((widget) => widget is Text && prompts.contains(widget.data)),
+      findsOneWidget,
+    );
   });
 }

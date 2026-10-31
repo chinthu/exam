@@ -54,6 +54,13 @@ List<Question> pickQuiz(List<Question> bank, Random random) {
   return selected;
 }
 
+/// Shuffles the bank and returns [size] different questions.
+List<Question> pickRandomQuiz(List<Question> bank, Random random, [int size = quizSize]) {
+  final copy = List<Question>.of(bank)..shuffle(random);
+  if (copy.length <= size) return copy;
+  return copy.take(size).toList();
+}
+
 const List<String> categories = [
   'Science and Technology',
   'Language and Literature',

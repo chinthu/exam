@@ -3,7 +3,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'figures.dart';
+import 'kerala_questions.dart';
 import 'questions.dart';
+
+enum QuizMode { scholarship, kerala }
+
+List<Question> buildQuiz(QuizMode mode, Random random) {
+  switch (mode) {
+    case QuizMode.scholarship:
+      return pickQuiz(questionBank, random);
+    case QuizMode.kerala:
+      return pickRandomQuiz(keralaQuestionBank, random);
+  }
+}
 
 const _ink = Color(0xFF171717);
 const _muted = Color(0xFF8A8680);
@@ -112,12 +124,43 @@ class HomeScreen extends StatelessWidget {
                   textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 onPressed: () {
-                  final quiz = pickQuiz(questionBank, Random());
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => QuizScreen(questions: quiz)),
+                    MaterialPageRoute(
+                      builder: (_) => QuizScreen(
+                        questions: buildQuiz(QuizMode.scholarship, Random()),
+                        mode: QuizMode.scholarship,
+                      ),
+                    ),
                   );
                 },
                 child: const Text('Attend Quiz'),
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton(
+                key: const Key('kerala-special'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: _ink,
+                  minimumSize: const Size.fromHeight(54),
+                  side: const BorderSide(color: _ink),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => QuizScreen(
+                        questions: buildQuiz(QuizMode.kerala, Random()),
+                        mode: QuizMode.kerala,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Kerala Special'),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                '15 questions about Kerala and Kerala Piravi.',
+                style: TextStyle(fontSize: 14, height: 1.4, color: _muted),
               ),
               const SizedBox(height: 36),
               const Text(
@@ -143,9 +186,10 @@ class HomeScreen extends StatelessWidget {
 }
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.questions});
+  const QuizScreen({super.key, required this.questions, this.mode = QuizMode.scholarship});
 
   final List<Question> questions;
+  final QuizMode mode;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -205,7 +249,11 @@ class _QuizScreenState extends State<QuizScreen> {
     if (_index + 1 >= widget.questions.length) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => ScoreScreen(score: _score, total: widget.questions.length),
+          builder: (_) => ScoreScreen(
+            score: _score,
+            total: widget.questions.length,
+            mode: widget.mode,
+          ),
         ),
       );
       return;
@@ -405,10 +453,16 @@ class _OptionButton extends StatelessWidget {
 }
 
 class ScoreScreen extends StatelessWidget {
-  const ScoreScreen({super.key, required this.score, required this.total});
+  const ScoreScreen({
+    super.key,
+    required this.score,
+    required this.total,
+    this.mode = QuizMode.scholarship,
+  });
 
   final int score;
   final int total;
+  final QuizMode mode;
 
   @override
   Widget build(BuildContext context) {
@@ -432,9 +486,9 @@ class ScoreScreen extends StatelessWidget {
                   style: const TextStyle(fontSize: 64, height: 1, fontWeight: FontWeight.w700, color: _ink),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'That is the end of this quiz.',
-                  style: TextStyle(fontSize: 16, color: _muted),
+                Text(
+                  mode == QuizMode.kerala ? 'That is the end of Kerala Special.' : 'That is the end of this quiz.',
+                  style: const TextStyle(fontSize: 16, color: _muted),
                 ),
                 const Spacer(),
                 FilledButton(
@@ -445,9 +499,13 @@ class ScoreScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: () {
-                    final quiz = pickQuiz(questionBank, Random());
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => QuizScreen(questions: quiz)),
+                      MaterialPageRoute(
+                        builder: (_) => QuizScreen(
+                          questions: buildQuiz(mode, Random()),
+                          mode: mode,
+                        ),
+                      ),
                     );
                   },
                   child: const Text('Attend Quiz again'),
