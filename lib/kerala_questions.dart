@@ -1,7 +1,7 @@
 import 'questions.dart';
 
 /// Kerala Piravi special quiz.
-/// Each visit shows 15 of these 90 questions, in a new order.
+/// Each visit shows 15 of these 91 questions, in a new order.
 Question _k(String topic, String prompt, List<String> options, int correct) {
   return Question(
     category: topic,
@@ -13,7 +13,6 @@ Question _k(String topic, String prompt, List<String> options, int correct) {
 
 final List<Question> keralaQuestionBank = [
   _k('Kerala Piravi', 'When do we celebrate Kerala Piravi?', ['1 January', '15 August', '1 November', '2 October'], 2),
-  _k('Kerala Piravi', 'What does Kerala Piravi mean?', ['Kerala\'s birthday', 'Kerala\'s river', 'Kerala\'s capital', 'Kerala\'s dance'], 0),
   _k('Kerala Piravi', 'In which year was Kerala formed?', ['1947', '1950', '1956', '1965'], 2),
   _k('Kerala Piravi', 'How old does Kerala turn on 1 November 2026?', ['50 years', '70 years', '80 years', '100 years'], 1),
   _k('Kerala Piravi', 'Which three regions joined to form Kerala?', [
@@ -23,7 +22,6 @@ final List<Question> keralaQuestionBank = [
     'Mumbai, Chennai and Kolkata',
   ], 1),
   _k('Kerala Piravi', 'Kerala Piravi is also called', ['Republic Day', 'Independence Day', 'Kerala Formation Day', 'Teachers\' Day'], 2),
-  _k('Kerala Piravi', '"Kerala Piravi Aashamsakal" means', ['Good night', 'Happy birthday, Kerala', 'It is raining', 'Time for school'], 1),
   _k('Kerala Piravi', 'Why is 1 November a holiday in Kerala?', [
     'It is Kerala\'s birthday',
     'It always snows that day',
@@ -45,7 +43,6 @@ final List<Question> keralaQuestionBank = [
   ], 0),
   _k('Places', 'Kochi is in which district?', ['Wayanad', 'Ernakulam', 'Idukki', 'Kasaragod'], 1),
   _k('Places', 'Which city was also called Calicut?', ['Kollam', 'Kottayam', 'Kozhikode', 'Palakkad'], 2),
-  _k('Places', 'Which city was also called Cochin?', ['Kannur', 'Alappuzha', 'Thrissur', 'Kochi'], 3),
   _k('Places', 'Munnar is famous for', ['Deserts', 'Tea gardens', 'Coal mines', 'Snow houses'], 1),
   _k('Places', 'Alappuzha is famous for', ['Ski slopes', 'Sand dunes', 'Houseboats and backwaters', 'Apple farms'], 2),
   _k('Places', 'Vasco da Gama landed at', ['Munnar', 'Silent Valley', 'Idukki dam', 'Kappad near Kozhikode'], 3),
@@ -72,18 +69,9 @@ final List<Question> keralaQuestionBank = [
   ], 2),
   _k('Festivals', 'Onam is the harvest festival of', ['Punjab', 'Kerala', 'Gujarat', 'Assam'], 1),
   _k('Festivals', 'Onam remembers which king?', ['Ashoka', 'Akbar', 'Shivaji', 'Mahabali'], 3),
-  _k('Festivals', 'A pookalam is a', ['Flower carpet', 'Boat', 'Sweet drink', 'Drum'], 0),
   _k('Festivals', 'Vishu is a festival of', ['Kashmir', 'Kerala', 'The desert', 'Only the snow hills'], 1),
-  _k('Festivals', 'The special first sight on Vishu morning is called', ['Pookalam', 'Sadya', 'Vishukkani', 'Vallam'], 2),
-  _k('Festivals', 'Money that elders give children on Vishu is called', ['Payasam', 'Vishu kaineetam', 'Kappa', 'Sadya'], 1),
-  _k('Festivals', 'Thrissur Pooram is famous for', ['Skiing', 'Elephants and temple drums', 'Ice skating', 'Sand dunes'], 1),
   _k('Festivals', 'The Nehru Trophy boat race is held at', ['Delhi', 'Jaipur', 'Shimla', 'Alappuzha'], 3),
   _k('Food', 'A Kerala sadya is traditionally served on a', ['Paper cup', 'Banana leaf', 'Steel spoon', 'Glass bottle'], 1),
-  _k('Food', 'Payasam is a', ['Sweet dish', 'Kind of boat', 'Mountain', 'Temple'], 0),
-  _k('Food', 'Puttu is', ['A steamed rice cake', 'An ice cream', 'A chocolate bar', 'A leather shoe'], 0),
-  _k('Food', 'Appam is a', ['Fishing net', 'Soft rice pancake', 'Waterfall', 'Temple bell'], 1),
-  _k('Food', 'In a Kerala kitchen, kappa means', ['Tea', 'Coconut oil', 'Tapioca', 'Cardamom'], 2),
-  _k('Festivals', 'A snake-boat race in Kerala is called', ['Kathakali', 'Vallam kali', 'Mohiniyattam', 'Kummi'], 1),
   _k('Culture', 'Kathakali is a', ['River', 'Dance-drama of Kerala', 'Sweet', 'Dam'], 1),
   _k('Culture', 'Mohiniyattam is a', ['Classical dance of Kerala', 'Fish', 'Hill station', 'Breakfast'], 0),
   _k('Culture', 'Kalaripayattu is a', ['Flower', 'Breakfast dish', 'Martial art of Kerala', 'School bus'], 2),
@@ -145,7 +133,6 @@ final List<Question> keralaQuestionBank = [
   _k('Our State', 'How many Lok Sabha seats does Kerala have?', ['14', '18', '20', '25'], 2),
   _k('Our State', 'How many Rajya Sabha seats does Kerala have?', ['6', '9', '12', '20'], 1),
   _k('Places', 'Where is the Kerala Niyamasabha?', ['Kochi', 'Thrissur', 'Kozhikode', 'Thiruvananthapuram'], 3),
-  _k('Places', 'The Governor of Kerala lives in which city?', ['Kochi', 'Kannur', 'Thiruvananthapuram', 'Palakkad'], 2),
   _k('Places', 'Where is the Kerala High Court?', ['Thiruvananthapuram', 'Kozhikode', 'Ernakulam', 'Kollam'], 2),
   _k('Places', 'Where is Kerala Kalamandalam?', [
     'Cheruthuruthy in Thrissur',
@@ -197,4 +184,48 @@ final List<Question> keralaQuestionBank = [
     'O. N. V. Kurup',
     'K. Satchidanandan',
   ], 0),
+  _k('Culture', 'Who is called the father of modern Malayalam?', [
+    'Kunchan Nambiar',
+    'Thunchath Ezhuthachan',
+    'Kumaran Asan',
+    'Vallathol Narayana Menon',
+  ], 1),
+  _k('Culture', 'Who wrote the novel Chemmeen?', [
+    'O. Chandu Menon',
+    'M. T. Vasudevan Nair',
+    'Thakazhi Sivasankara Pillai',
+    'Vaikom Muhammad Basheer',
+  ], 2),
+  _k('Culture', 'Who wrote the novel Indulekha?', [
+    'O. Chandu Menon',
+    'Thakazhi Sivasankara Pillai',
+    'C. V. Raman Pillai',
+    'S. K. Pottekkatt',
+  ], 0),
+  _k('Culture', 'Who was the first Malayalam writer to win the Jnanpith Award?', [
+    'O. N. V. Kurup',
+    'M. T. Vasudevan Nair',
+    'G. Sankara Kurup',
+    'Thakazhi Sivasankara Pillai',
+  ], 2),
+  _k('Culture', 'Ottamthullal was created by', [
+    'Kunchan Nambiar',
+    'Vallathol Narayana Menon',
+    'Swathi Thirunal',
+    'Raja Ravi Varma',
+  ], 0),
+  _k('People', 'Raja Ravi Varma was born at', ['Kalady', 'Kilimanoor', 'Guruvayur', 'Kannur'], 1),
+  _k('Places', 'Which is the largest district of Kerala by area?', ['Alappuzha', 'Ernakulam', 'Idukki', 'Wayanad'], 2),
+  _k('Places', 'Which is the smallest district of Kerala by area?', ['Idukki', 'Palakkad', 'Kasaragod', 'Alappuzha'], 3),
+  _k('Nature', 'Which is the longest river in Kerala?', ['Bharathapuzha', 'Pamba', 'Periyar', 'Chaliyar'], 2),
+  _k('Nature', 'Which is the longest lake in Kerala?', ['Sasthamcotta', 'Ashtamudi', 'Pookode', 'Vembanad'], 3),
+  _k('Nature', 'How many rivers does Kerala have?', ['14', '27', '44', '60'], 2),
+  _k('Nature', 'What is the state butterfly of Kerala?', [
+    'Blue tiger',
+    'Malabar banded peacock',
+    'Monarch',
+    'Common crow',
+  ], 1),
+  _k('Places', 'Athirappilly waterfall is in which district?', ['Idukki', 'Wayanad', 'Thrissur', 'Kollam'], 2),
+  _k('Places', 'Sabarimala temple is in which district?', ['Thrissur', 'Pathanamthitta', 'Kottayam', 'Palakkad'], 1),
 ];

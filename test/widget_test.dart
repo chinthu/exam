@@ -31,10 +31,10 @@ void main() {
     expect(find.text('How many squares do you see in this picture?'), findsOneWidget);
   });
 
-  test('kerala special has 90 questions and each quiz picks 15', () {
-    expect(keralaQuestionBank, hasLength(90));
+  test('kerala special has 91 questions and each quiz picks 15', () {
+    expect(keralaQuestionBank, hasLength(91));
     final prompts = keralaQuestionBank.map((question) => question.prompt).toSet();
-    expect(prompts, hasLength(90));
+    expect(prompts, hasLength(91));
 
     for (final question in keralaQuestionBank) {
       expect(question.options, hasLength(4));
